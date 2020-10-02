@@ -11,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -120,7 +119,6 @@ public class Main extends Application {
 	static BorderPane mainPain = new BorderPane();
 	static Stage stage;
 	static boolean game = true;
-	static MediaPlayer background = new MediaPlayer(new Media(new File("background.mp3").toURI().toString()));
 	static MediaPlayer playgameOver = new MediaPlayer(new Media(new File("gameover.wav").toURI().toString()));
 	static MediaPlayer playFlag = new MediaPlayer(new Media(new File("flag.wav").toURI().toString()));
 	static MediaPlayer success = new MediaPlayer(new Media(new File("success.wav").toURI().toString()));
@@ -140,7 +138,6 @@ public class Main extends Application {
 		// gamePane=controller.GetgamePane();
 		controller.GetgamePane().getChildren().clear();
 		controller.GetgamePane().getChildren().add(grid);
-		background.setVolume(0.05);
 		success.setVolume(0.2);
 		Scene scene = new Scene(mainPain);
 		Main.stage = stage;
@@ -164,11 +161,7 @@ public class Main extends Application {
 		Main.newGame = new Engine(width, height, controller.getMines());
 		Main.buttons = new MineButton[width][height];
 		grid = new GridPane();
-		for (int i = 1; i < width; i++)
-			for (int j = 0; j < height; j++) {
-				if (newGame.mines[i][j].isMine == 0)
-					newGame.mines[i][j].open();
-			}
+
 		for (int i = 0; i < width; i++)
 			for (int j = 0; j < height; j++) {
 				final int icopy = i;
@@ -185,7 +178,6 @@ public class Main extends Application {
 					} else {
 						Main.newGame.mines[icopy][jcopy].open();
 						if (Main.newGame.mines[icopy][jcopy].toString() == "m") {
-							background.stop();
 							playgameOver.seek(Duration.ZERO);
 							playgameOver.play();
 							updateFrame();
@@ -296,14 +288,12 @@ public class Main extends Application {
 	}
 
 	public static void updateFrame() {
+		controller.getFlag().setText(String.valueOf(newGame.Flags));
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++) {
 				final int xcopy = x;
 				final int ycopy = y;
 				Main.buttons[xcopy][ycopy].Update();
-				controller.getFlag().setText(String.valueOf(newGame.Flags));
-				// Main.buttons[xcopy][ycopy].setGraphic(closedf);
-				// Main.buttons[xcopy][ycopy].setText(Main.newGame.mines[x][y].toString());
 
 			}
 	}
