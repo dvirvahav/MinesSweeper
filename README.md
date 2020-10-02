@@ -1,1 +1,3 @@
 # MinesSweeper
+![](preview.gif)
+
